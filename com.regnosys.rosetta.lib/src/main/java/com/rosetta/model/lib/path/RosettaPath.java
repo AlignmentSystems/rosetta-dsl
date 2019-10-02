@@ -44,7 +44,7 @@ public class RosettaPath {
 
         for (Element element : elements) {
             if (newPath == null) {
-                newPath = createPath(Element.create(element.uri, element.path, element.index, element.attrs));
+                newPath = createPath(Element.create(element.uri, element.name, element.index, element.attrs));
             } else {
                 newPath = newPath.newSubPath(element);
             }
@@ -129,7 +129,7 @@ public class RosettaPath {
 
     public boolean endsWith(RosettaPath other) {
         if (other==null) return true;
-        if (!other.element.path.equals("*") && !other.element.path.equals(element.path)) return false;
+        if (!other.element.name.equals("*") && !other.element.name.equals(element.name)) return false;
         if (other.hasParent() && !this.hasParent()) return false;
         if (!this.hasParent() && !other.hasParent()) return true;
         return this.parent.endsWith(other.parent);
@@ -137,7 +137,7 @@ public class RosettaPath {
     
     public boolean containsPath(RosettaPath subPath) {
     	if (subPath==null) return true;
-    	if (subPath.element.path.equals(element.path) || subPath.element.path.equals("*")) {
+    	if (subPath.element.name.equals(element.name) || subPath.element.name.equals("*")) {
     		return this.parent.endsWith(subPath.parent);
     	}
     	if (parent==null) return false;
@@ -156,7 +156,7 @@ public class RosettaPath {
     }
 
 	public boolean matchesIgnoringIndex(RosettaPath path) {
-		if (!this.element.path.equals(path.element.path)) return false;
+		if (!this.element.name.equals(path.element.name)) return false;
 		if (parent==null) return path.parent==null;
 		if (path.parent==null) return false;
 		return parent.matchesIgnoringIndex(path.parent);
@@ -185,13 +185,13 @@ public class RosettaPath {
         public static final String DEFAULT_URI = "FpML_5_10";
 
         private final String uri;
-        private final String path;
+        private final String name;
         private final OptionalInt index;
         private final Map<String, String> attrs;
 
         private Element(String uri, String path, OptionalInt index, Map<String, String> attrs) {
             this.uri = uri;
-            this.path = path;
+            this.name = path;
             this.index = index;
             this.attrs = attrs == null ? Collections.emptyMap() : attrs;
         }
@@ -229,15 +229,23 @@ public class RosettaPath {
         }
 
         public Element withIndex(int newIndex) {
-			return new Element(uri, path, OptionalInt.of(newIndex), attrs);
+			return new Element(uri, name, OptionalInt.of(newIndex), attrs);
 		}
 
         public String getUri() {
             return uri;
         }
 
+        /**
+         * @deprecated - path isn't a good name for the name of the element - use getName() instead
+         */
+        @Deprecated
         public String getPath() {
-            return path;
+            return name;
+        }
+        
+        public String getName() {
+            return name;
         }
 
         public OptionalInt getIndex() {
@@ -247,13 +255,13 @@ public class RosettaPath {
         private String asPathString() {
             String idSection = !attrs.isEmpty() ? attrs.entrySet().stream().map(e -> e.getKey() + "=" + e.getValue()).collect(Collectors.joining(",", "[", "]")) : "";
             String indexSection = index.isPresent() ? format("(%s)", index.getAsInt()) : "";
-            return format("%s%s%s", path, indexSection, idSection);
+            return format("%s%s%s", name, indexSection, idSection);
         }
 
         @Override
         public String toString() {
             return "Element{" +
-                    "path='" + path + '\'' +
+                    "path='" + name + '\'' +
                     ", index=" + index +
                     ", uri='" + uri + '\'' +
                     ", attrs=" + attrs +
@@ -268,7 +276,7 @@ public class RosettaPath {
             Element element = (Element) o;
 
             if (uri != null ? !uri.equals(element.uri) : element.uri != null) return false;
-            if (path != null ? !path.equals(element.path) : element.path != null) return false;
+            if (name != null ? !name.equals(element.name) : element.name != null) return false;
             if (index != null ? !index.equals(element.index) : element.index != null) return false;
             return attrs != null ? attrs.equals(element.attrs) : element.attrs == null;
         }
@@ -276,7 +284,7 @@ public class RosettaPath {
         @Override
         public int hashCode() {
             int result = uri != null ? uri.hashCode() : 0;
-            result = 31 * result + (path != null ? path.hashCode() : 0);
+            result = 31 * result + (name != null ? name.hashCode() : 0);
             result = 31 * result + (index != null ? index.hashCode() : 0);
             result = 31 * result + (attrs != null ? attrs.hashCode() : 0);
             return result;

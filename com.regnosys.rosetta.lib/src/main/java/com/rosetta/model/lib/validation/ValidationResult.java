@@ -10,7 +10,7 @@ import java.util.function.Function;
 
 import static com.rosetta.model.lib.validation.ValidationResult.ValidationType.CHOICE_RULE;
 
-public interface ValidationResult<T> {
+public interface ValidationResult {
 
 	boolean isSuccess();
 
@@ -26,19 +26,19 @@ public interface ValidationResult<T> {
 	
 	RosettaPath getPath();
 
-	static <T> ValidationResult<T> success(String name, ValidationType validationType, String modelObjectName, RosettaPath path, String definition) {
-		return new ModelValidationResult<>(name, validationType, modelObjectName, path, definition, Optional.empty());
+	static  ValidationResult success(String name, ValidationType validationType, String modelObjectName, RosettaPath path, String definition) {
+		return new ModelValidationResult(name, validationType, modelObjectName, path, definition, Optional.empty());
 	}
 	
-	static <T> ValidationResult<T> failure(String name, ValidationType validationType, String modelObjectName, RosettaPath path, String definition, String failureMessage) {
-		return new ModelValidationResult<>(name, validationType, modelObjectName, path, definition, Optional.of(failureMessage));
+	static  ValidationResult failure(String name, ValidationType validationType, String modelObjectName, RosettaPath path, String definition, String failureMessage) {
+		return new ModelValidationResult(name, validationType, modelObjectName, path, definition, Optional.of(failureMessage));
 	}
 
 	enum ValidationType {
 		DATA_RULE, CHOICE_RULE, MODEL_INSTANCE, ONLY_EXISTS, POST_PROCESS_EXCEPTION
 	}
 
-	class ModelValidationResult<T> implements ValidationResult<T> {
+	class ModelValidationResult implements ValidationResult {
 
 		private final String modelObjectName;
 		private final String name;
@@ -101,7 +101,7 @@ public interface ValidationResult<T> {
 		}
 	}
 
-	class ChoiceRuleFailure<T> implements ValidationResult<T> {
+	class ChoiceRuleFailure implements ValidationResult {
 
 		private final String name;
 		private final String modelObjectName;
@@ -197,7 +197,7 @@ public interface ValidationResult<T> {
 		}
 	}
 	
-	class ProcessValidationResult<T> implements ValidationResult<T> {
+	class ProcessValidationResult implements ValidationResult {
 		private String message;
 		private String modelObjectName;
 		private String processorName;

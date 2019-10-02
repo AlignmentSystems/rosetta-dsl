@@ -168,7 +168,7 @@ class DataRuleGenerator {
 			private static final String DEFINITION = «definition»;
 			
 			@Override
-			public ValidationResult<«rosettaClass.name»> validate(RosettaPath path, «rosettaClass.name» «rosettaClass.name.toFirstLower») {
+			public ValidationResult validate(RosettaPath path, «rosettaClass.name» «rosettaClass.name.toFirstLower») {
 				ComparisonResult result = executeDataRule(«rosettaClass.name.toFirstLower»);
 				if (result.get()) {
 					return ValidationResult.success(NAME, ValidationResult.ValidationType.DATA_RULE,  "«rosettaClass.name»", path, DEFINITION);
@@ -178,7 +178,7 @@ class DataRuleGenerator {
 			}
 			
 			@Override
-			public ValidationResult<«rosettaClass.name»> validate(RosettaPath path, RosettaModelObjectBuilder «rosettaClass.name.toFirstLower») {
+			public ValidationResult validate(RosettaPath path, RosettaModelObjectBuilder «rosettaClass.name.toFirstLower») {
 				ComparisonResult result = executeDataRule((«rosettaClass.name»)«rosettaClass.name.toFirstLower».build());
 				if (result.get()) {
 					return ValidationResult.success(NAME, ValidationResult.ValidationType.DATA_RULE, "«rosettaClass.name»", path, DEFINITION);

@@ -164,7 +164,7 @@ class ChoiceRuleGenerator {
 			private static final String NAME = "«ruleName»";
 			
 		    @Override
-		    public ValidationResult<«clazz»> validate(RosettaPath path, «clazz» object) {
+		    public ValidationResult validate(RosettaPath path, «clazz» object) {
 				List<String> choiceFieldNames = Arrays.asList(«attributes.join('"', '", "', '"', [it])»);
 				List<String> populatedFieldNames = new LinkedList<>();
 				«FOR a : attributes»
@@ -176,11 +176,11 @@ class ChoiceRuleGenerator {
 				if (validationMethod.check(populatedFieldNames.size())) {
 					return ValidationResult.success(NAME, ValidationResult.ValidationType.CHOICE_RULE, "«clazz»", path, "");
 				}
-				return new ValidationResult.ChoiceRuleFailure<«clazz»>(NAME, "«clazz»", choiceFieldNames, path, populatedFieldNames, validationMethod);
+				return new ValidationResult.ChoiceRuleFailure(NAME, "«clazz»", choiceFieldNames, path, populatedFieldNames, validationMethod);
 		    }
 		    
 		    @Override
-		    public ValidationResult<«clazz»> validate(RosettaPath path, RosettaModelObjectBuilder builder) {
+		    public ValidationResult validate(RosettaPath path, RosettaModelObjectBuilder builder) {
 		    	«clazz».«clazz»Builder object = («clazz».«clazz»Builder) builder;
 				List<String> choiceFieldNames = Arrays.asList(«attributes.join('"', '", "', '"', [it])»);
 				List<String> populatedFieldNames = new LinkedList<>();
@@ -193,7 +193,7 @@ class ChoiceRuleGenerator {
 				if (validationMethod.check(populatedFieldNames.size())) {
 					return ValidationResult.success(NAME, ValidationResult.ValidationType.CHOICE_RULE, "«clazz»", path, "");
 				}
-				return new ValidationResult.ChoiceRuleFailure<«clazz»>(NAME, "«clazz»", choiceFieldNames, path, populatedFieldNames, validationMethod);
+				return new ValidationResult.ChoiceRuleFailure(NAME, "«clazz»", choiceFieldNames, path, populatedFieldNames, validationMethod);
 		    }
 		}
 	'''

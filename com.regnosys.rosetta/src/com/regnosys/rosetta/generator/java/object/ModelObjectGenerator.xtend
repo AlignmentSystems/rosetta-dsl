@@ -322,7 +322,7 @@ class ModelObjectGenerator {
 		public class «c.name»Validator implements Validator<«c.name»> {
 		
 			@Override
-			public ValidationResult<«c.name»> validate(RosettaPath path, «c.name» o) {
+			public ValidationResult validate(RosettaPath path, «c.name» o) {
 				String error = 
 					Lists.<ComparisonResult>newArrayList(
 						«FOR attr : c.regularAndMaterialisedAttributes SEPARATOR ","»
@@ -341,7 +341,7 @@ class ModelObjectGenerator {
 			}
 			
 			@Override
-			public ValidationResult<«c.name»> validate(RosettaPath path, RosettaModelObjectBuilder b) {
+			public ValidationResult validate(RosettaPath path, RosettaModelObjectBuilder b) {
 				«c.name».«c.name»Builder o = («c.name».«c.name»Builder) b;
 				String error = 
 					Lists.<ComparisonResult>newArrayList(
@@ -403,7 +403,7 @@ class ModelObjectGenerator {
 		public class «onlyExistsValidatorName(c)» implements ValidatorWithArg<«c.name», String> {
 		
 			@Override
-			public ValidationResult<«c.name»> validate(RosettaPath path, «c.name» o, String field) {
+			public ValidationResult validate(RosettaPath path, «c.name» o, String field) {
 				Map<String,Boolean> fieldExistenceMap = ImmutableMap.<String, Boolean>builder()
 						«FOR attr : c.regularAttributes»
 						.put("«attr.name»", ExistenceChecker.isSet(o.get«attr.name?.toFirstUpper»()))
@@ -427,7 +427,7 @@ class ModelObjectGenerator {
 			}
 			
 			@Override
-			public ValidationResult<«c.name»> validate(RosettaPath path, RosettaModelObjectBuilder b, String field) {
+			public ValidationResult validate(RosettaPath path, RosettaModelObjectBuilder b, String field) {
 				«c.name».«c.name»Builder o = («c.name».«c.name»Builder)b;
 				Map<String,Boolean> fieldExistenceMap = ImmutableMap.<String, Boolean>builder()
 						«FOR attr : c.regularAttributes»
