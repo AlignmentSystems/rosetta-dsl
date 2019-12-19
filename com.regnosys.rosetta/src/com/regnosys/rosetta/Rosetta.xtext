@@ -860,4 +860,54 @@ BlueprintIfThen :
 	
 ;
 
+/*****************************************
+ * Instance grammar.
+ *****************************************/
+
+terminal HASH_IDENTIFIER: '#'('a'..'z'|'A'..'Z'|'_'|'0'..'9')*;
+
+RosettaDocument :
+	'[' contents+=RosettaObjectTyped (',' contents+=RosettaObjectTyped)* ']'
+;
+
+//TODO there ought to be some refactoring possible between typed and untyped
+//Typed exists so we can force the top elements in a document to provide their type information
+RosettaObjectTyped returns RosettaObject : 
+	'{'
+	'type' ':' typeref=[RosettaTyped]
+	('id' ':' identifier=HASH_IDENTIFIER)?
+	fields+=RosettaField*
+	'}'
+;
+
+RosettaObjectUntyped returns RosettaObject:
+	{RosettaObject} '{'
+	('id' ':' identifier=HASH_IDENTIFIER)?
+	fields+=RosettaField*
+	'}'
+;
+
+RosettaObject :
+	RosettaObjectTyped | RosettaObjectUntyped
+;
+
+RosettaField :
+	name =[RosettaTypedFeature|ValidID]
+	':'
+	//value = RosettaValue
+;
+
+RosettaValue :
+	RosettaObject
+	| RosettaArray
+	| RosettaBooleanLiteral
+	| RosettaStringLiteral
+	| RosettaBigDecimalLiteral
+	| RosettaIntLiteral
+	| HASH_IDENTIFIER
+;
+
+RosettaArray :
+	'[' contents+=RosettaObject (',' contents+=RosettaObject)* ']'
+;
 

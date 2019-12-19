@@ -7,7 +7,7 @@ import java.util.Optional;
 /**
  * A function that takes a {@link RosettaModelObject}, operates on that object and returns a new instance of that object.
  */
-public interface PostProcessor {
+public interface PostProcessorZ {
 
 	<R extends RosettaModelObject> R process(Class<R> rosettaType, R instance);
 

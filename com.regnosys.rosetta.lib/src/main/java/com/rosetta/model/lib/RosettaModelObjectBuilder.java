@@ -8,6 +8,7 @@ import com.rosetta.model.lib.meta.RosettaMetaData;
 import com.rosetta.model.lib.path.RosettaPath;
 import com.rosetta.model.lib.process.AttributeMeta;
 import com.rosetta.model.lib.process.BuilderProcessor;
+import com.rosetta.model.lib.recursebuilder.RecursiveBuilder;
 
 /**
  * @author TomForwood
@@ -41,6 +42,8 @@ public abstract class RosettaModelObjectBuilder {
 	 * @param processors
 	 */
 	public abstract void process(RosettaPath path, BuilderProcessor processor);
+	
+	public abstract void buildMe(RosettaPath path, RecursiveBuilder builder);
 	
 	protected <A> A getIndex(List<A> list, int index, Supplier<A> supplier) {
 		if (list.size()>index) {//this item already exists - return it

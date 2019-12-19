@@ -717,3 +717,25 @@ class BlueprintLookup extends BlueprintNode {
 	String identifier	
 }
 
+class RosettaDocument {
+	contains RosettaObject[] contents
+}
+
+class RosettaObject {
+	refers RosettaTyped typeref
+	String identifier
+	contains RosettaField[] fields
+}
+
+class RosettaField {
+	refers RosettaTypedFeature name
+	contains RosettaValue value 
+}
+
+class RosettaValue {
+}	
+
+class RosettaArray {
+	contains RosettaObject[] contents
+}
+
