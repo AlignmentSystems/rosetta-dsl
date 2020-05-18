@@ -134,7 +134,8 @@ class FuncGenerator {
 					«ENDIF»
 					
 					«output.toBuilderType(names)» «outputName»Holder = doEvaluate(«func.inputsAsArguments(names)»);
-					«outputType» «outputName» = assignOutput(«outputName»Holder«IF !inputs.empty», «ENDIF»«func.inputsAsArguments(names)»)«IF outNeedsBuilder».build()«ENDIF»;
+					«outputName»Holder = assignOutput(«outputName»Holder«IF !inputs.empty», «ENDIF»«func.inputsAsArguments(names)»);
+					«outputType» «outputName» = afterEvaluate(«outputName»Holder«IF !inputs.empty», «ENDIF»«func.inputsAsArguments(names)»)«IF outNeedsBuilder».build()«ENDIF»;
 					
 					«IF !func.postConditions.empty»
 						// post-conditions
@@ -158,6 +159,10 @@ class FuncGenerator {
 				}
 
 				protected abstract «output.toBuilderType(names)» doEvaluate(«func.inputsAsParameters(names)»);
+				
+				protected «output.toBuilderType(names)» afterEvaluate(«output.toBuilderType(names)» «outputName»«IF !inputs.empty», «ENDIF»«func.inputsAsParameters(names)») {
+					return «outputName»;
+				}
 				
 				«FOR alias : func.shortcuts»
 					
