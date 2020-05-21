@@ -43,7 +43,8 @@ class RosettaFunctionGenerationTest {
 				public String evaluate(String name, String name2) {
 					
 					String resultHolder = doEvaluate(name, name2);
-					String result = assignOutput(resultHolder, name, name2);
+					resultHolder = assignOutput(resultHolder, name, name2);
+					String result = afterEvaluate(resultHolder, name, name2);
 					
 					return result;
 				}
@@ -53,6 +54,10 @@ class RosettaFunctionGenerationTest {
 				}
 			
 				protected abstract String doEvaluate(String name, String name2);
+				
+				protected String afterEvaluate(String result, String name, String name2) {
+					return result;
+				}
 				
 				public static final class FuncFooDefault extends FuncFoo {
 					@Override

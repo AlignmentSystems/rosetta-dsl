@@ -87,7 +87,8 @@ class RosettaCalculationGenerationTest {
 						public BigDecimal evaluate(PeriodEnum in1, Period in2) {
 							
 							BigDecimal outHolder = doEvaluate(in1, in2);
-							BigDecimal out = assignOutput(outHolder, in1, in2);
+							outHolder = assignOutput(outHolder, in1, in2);
+							BigDecimal out = afterEvaluate(outHolder, in1, in2);
 							
 							return out;
 						}
@@ -98,6 +99,10 @@ class RosettaCalculationGenerationTest {
 						}
 					
 						protected abstract BigDecimal doEvaluate(PeriodEnum in1, Period in2);
+						
+						protected BigDecimal afterEvaluate(BigDecimal out, PeriodEnum in1, Period in2) {
+							return out;
+						}
 						
 						
 						protected Mapper<Integer> i(PeriodEnum in1, Period in2) {
@@ -148,7 +153,8 @@ class RosettaCalculationGenerationTest {
 				public Integer evaluate(Integer one) {
 					
 					Integer outHolder = doEvaluate(one);
-					Integer out = assignOutput(outHolder, one);
+					outHolder = assignOutput(outHolder, one);
+					Integer out = afterEvaluate(outHolder, one);
 					
 					return out;
 				}
@@ -159,6 +165,10 @@ class RosettaCalculationGenerationTest {
 				}
 			
 				protected abstract Integer doEvaluate(Integer one);
+				
+				protected Integer afterEvaluate(Integer out, Integer one) {
+					return out;
+				}
 				
 				
 				protected Mapper<Integer> oneA(Integer one) {
@@ -212,7 +222,8 @@ class RosettaCalculationGenerationTest {
 				public Integer evaluate(Integer arg1, Integer arg2) {
 					
 					Integer resHolder = doEvaluate(arg1, arg2);
-					Integer res = assignOutput(resHolder, arg1, arg2);
+					resHolder = assignOutput(resHolder, arg1, arg2);
+					Integer res = afterEvaluate(resHolder, arg1, arg2);
 					
 					return res;
 				}
@@ -223,6 +234,10 @@ class RosettaCalculationGenerationTest {
 				}
 			
 				protected abstract Integer doEvaluate(Integer arg1, Integer arg2);
+				
+				protected Integer afterEvaluate(Integer res, Integer arg1, Integer arg2) {
+					return res;
+				}
 				
 				
 				protected Mapper<Integer> a1(Integer arg1, Integer arg2) {
@@ -296,7 +311,8 @@ class RosettaCalculationGenerationTest {
 			public FoncOut evaluate(FuncIn funIn) {
 				
 				FoncOut.FoncOutBuilder resHolder = doEvaluate(funIn);
-				FoncOut res = assignOutput(resHolder, funIn).build();
+				resHolder = assignOutput(resHolder, funIn);
+				FoncOut res = afterEvaluate(resHolder, funIn).build();
 				
 				objectValidator.validateAndFailOnErorr(FoncOut.class, res);
 				return res;
@@ -315,6 +331,10 @@ class RosettaCalculationGenerationTest {
 			}
 		
 			protected abstract FoncOut.FoncOutBuilder doEvaluate(FuncIn funIn);
+			
+			protected FoncOut.FoncOutBuilder afterEvaluate(FoncOut.FoncOutBuilder res, FuncIn funIn) {
+				return res;
+			}
 			
 			
 			protected Mapper<Date> arg1(FuncIn funIn) {
@@ -390,7 +410,8 @@ class RosettaCalculationGenerationTest {
 			public FuncOut evaluate(FuncIn funcIn) {
 				
 				FuncOut.FuncOutBuilder outHolder = doEvaluate(funcIn);
-				FuncOut out = assignOutput(outHolder, funcIn).build();
+				outHolder = assignOutput(outHolder, funcIn);
+				FuncOut out = afterEvaluate(outHolder, funcIn).build();
 				
 				objectValidator.validateAndFailOnErorr(FuncOut.class, out);
 				return out;
@@ -409,6 +430,10 @@ class RosettaCalculationGenerationTest {
 			}
 		
 			protected abstract FuncOut.FuncOutBuilder doEvaluate(FuncIn funcIn);
+			
+			protected FuncOut.FuncOutBuilder afterEvaluate(FuncOut.FuncOutBuilder out, FuncIn funcIn) {
+				return out;
+			}
 			
 			
 			protected Mapper<String> linkId(FuncIn funcIn) {
@@ -480,7 +505,8 @@ class RosettaCalculationGenerationTest {
 					public OtherType evaluate(WithMeta withMeta) {
 						
 						OtherType.OtherTypeBuilder outHolder = doEvaluate(withMeta);
-						OtherType out = assignOutput(outHolder, withMeta).build();
+						outHolder = assignOutput(outHolder, withMeta);
+						OtherType out = afterEvaluate(outHolder, withMeta).build();
 						
 						objectValidator.validateAndFailOnErorr(OtherType.class, out);
 						return out;
@@ -512,6 +538,10 @@ class RosettaCalculationGenerationTest {
 					}
 				
 					protected abstract OtherType.OtherTypeBuilder doEvaluate(WithMeta withMeta);
+					
+					protected OtherType.OtherTypeBuilder afterEvaluate(OtherType.OtherTypeBuilder out, WithMeta withMeta) {
+						return out;
+					}
 					
 					public static final class asKeyUsageDefault extends asKeyUsage {
 						@Override
@@ -570,7 +600,8 @@ class RosettaCalculationGenerationTest {
 					public OtherType evaluate(List<WithMeta> withMeta) {
 						
 						OtherType.OtherTypeBuilder outHolder = doEvaluate(withMeta);
-						OtherType out = assignOutput(outHolder, withMeta).build();
+						outHolder = assignOutput(outHolder, withMeta);
+						OtherType out = afterEvaluate(outHolder, withMeta).build();
 						
 						objectValidator.validateAndFailOnErorr(OtherType.class, out);
 						return out;
@@ -596,6 +627,10 @@ class RosettaCalculationGenerationTest {
 					}
 				
 					protected abstract OtherType.OtherTypeBuilder doEvaluate(List<WithMeta> withMeta);
+					
+					protected OtherType.OtherTypeBuilder afterEvaluate(OtherType.OtherTypeBuilder out, List<WithMeta> withMeta) {
+						return out;
+					}
 					
 					public static final class asKeyUsageDefault extends asKeyUsage {
 						@Override
@@ -645,7 +680,8 @@ class RosettaCalculationGenerationTest {
 				public Integer evaluate() {
 					
 					Integer resHolder = doEvaluate();
-					Integer res = assignOutput(resHolder);
+					resHolder = assignOutput(resHolder);
+					Integer res = afterEvaluate(resHolder);
 					
 					return res;
 				}
@@ -656,6 +692,10 @@ class RosettaCalculationGenerationTest {
 				}
 			
 				protected abstract Integer doEvaluate();
+				
+				protected Integer afterEvaluate(Integer res) {
+					return res;
+				}
 				
 				
 				protected Mapper<Integer> arg1() {
@@ -755,7 +795,8 @@ class RosettaCalculationGenerationTest {
 					public String evaluate(Math in1, MathInput in2) {
 						
 						String arg1Holder = doEvaluate(in1, in2);
-						String arg1 = assignOutput(arg1Holder, in1, in2);
+						arg1Holder = assignOutput(arg1Holder, in1, in2);
+						String arg1 = afterEvaluate(arg1Holder, in1, in2);
 						
 						return arg1;
 					}
@@ -766,6 +807,10 @@ class RosettaCalculationGenerationTest {
 					}
 				
 					protected abstract String doEvaluate(Math in1, MathInput in2);
+					
+					protected String afterEvaluate(String arg1, Math in1, MathInput in2) {
+						return arg1;
+					}
 					
 					public static final class INCRDefault extends INCR {
 						@Override
@@ -790,7 +835,8 @@ class RosettaCalculationGenerationTest {
 					public String evaluate(Math in1, MathInput in2) {
 						
 						String arg1Holder = doEvaluate(in1, in2);
-						String arg1 = assignOutput(arg1Holder, in1, in2);
+						arg1Holder = assignOutput(arg1Holder, in1, in2);
+						String arg1 = afterEvaluate(arg1Holder, in1, in2);
 						
 						return arg1;
 					}
@@ -801,6 +847,10 @@ class RosettaCalculationGenerationTest {
 					}
 				
 					protected abstract String doEvaluate(Math in1, MathInput in2);
+					
+					protected String afterEvaluate(String arg1, Math in1, MathInput in2) {
+						return arg1;
+					}
 					
 					public static final class DECRDefault extends DECR {
 						@Override
@@ -852,7 +902,8 @@ class RosettaCalculationGenerationTest {
 				public Integer evaluate(Integer arg1) {
 					
 					Integer resHolder = doEvaluate(arg1);
-					Integer res = assignOutput(resHolder, arg1);
+					resHolder = assignOutput(resHolder, arg1);
+					Integer res = afterEvaluate(resHolder, arg1);
 					
 					return res;
 				}
@@ -863,6 +914,10 @@ class RosettaCalculationGenerationTest {
 				}
 			
 				protected abstract Integer doEvaluate(Integer arg1);
+				
+				protected Integer afterEvaluate(Integer res, Integer arg1) {
+					return res;
+				}
 				
 				
 				protected Mapper<Integer> addedOne(Integer arg1) {
