@@ -98,9 +98,13 @@ class MetaFieldGenerator {
 		val externalKeyType = RosettaFactoryImpl.eINSTANCE.createRosettaMetaType()
 		externalKeyType.setName("externalKey")
 		externalKeyType.type = stringType;
-		val filteredTypes = utypes.filter[t|t.name != "id" && t.name != "reference"].toSet;
-		filteredTypes.add(globalKeyType)
-		filteredTypes.add(externalKeyType)
+		val nonKeyTypes = utypes.filter[t|t.name != "id" && t.name != "reference"].toSet;
+		val keyTypes = newHashSet;
+		keyTypes.add(globalKeyType)
+		keyTypes.add(externalKeyType)
+		val filteredTypes = newHashSet;
+		filteredTypes.addAll(nonKeyTypes)
+		filteredTypes.addAll(keyTypes)
 		
 	'''
 		package «packages.basicMetafields.name»;
@@ -206,6 +210,18 @@ class MetaFieldGenerator {
 				
 				public MetaFields build() {
 					return new MetaFields(this);
+				}
+				
+				public MetaFieldsBuilder copy(MetaFieldsBuilder other, boolean overwriteKeys) {
+					if (overwriteKeys) {
+						«FOR keyType:keyTypes»
+							this.«keyType.name» = ofNullable(other).map(MetaFieldsBuilder::get«keyType.name.toFirstUpper»).orElse(null);
+						«ENDFOR»
+					}
+					«FOR nonKeyType:nonKeyTypes»
+						this.«nonKeyType.name» = ofNullable(other).map(MetaFieldsBuilder::get«nonKeyType.name.toFirstUpper»).orElse(null);
+					«ENDFOR»
+					return this;
 				}
 				
 				@Override
@@ -433,6 +449,14 @@ class MetaFieldGenerator {
 					return new FieldWithMeta«type.name.toFirstUpper»(this);
 				}
 				
+				public FieldWithMeta«type.name.toFirstUpper»Builder copy(FieldWithMeta«type.name.toFirstUpper»Builder other, boolean overwriteKeys) {
+					this.value = ofNullable(other).map(FieldWithMeta«type.name.toFirstUpper»Builder::getValue).orElse(null);
+					this.meta = ofNullable(other).map(FieldWithMeta«type.name.toFirstUpper»Builder::getMeta)
+							.map(otherMeta -> getOrCreateMeta().copy(otherMeta, overwriteKeys))
+							.orElse(null);
+					return this;
+				}
+				
 				@Override
 				public FieldWithMeta«type.name.toFirstUpper»Builder prune() {
 					return this;
@@ -644,6 +668,16 @@ class MetaFieldGenerator {
 					return new ReferenceWithMeta«type.name.toFirstUpper»(this);
 				}
 				
+				public ReferenceWithMeta«type.name.toFirstUpper»Builder copy(ReferenceWithMeta«type.name.toFirstUpper»Builder other, boolean overwriteKeys) {
+					this.value = ofNullable(other)
+							.map(ReferenceWithMeta«type.name.toFirstUpper»Builder::getValue)
+							.map(otherValue -> getOrCreateValue().copy(otherValue, overwriteKeys))
+							.orElse(null);
+					this.globalReference = ofNullable(other).map(ReferenceWithMeta«type.name.toFirstUpper»Builder::getGlobalReference).orElse(null);
+					this.externalReference = ofNullable(other).map(ReferenceWithMeta«type.name.toFirstUpper»Builder::getExternalReference).orElse(null);
+					return this;
+				}
+				
 				@Override
 				public ReferenceWithMeta«type.name.toFirstUpper»Builder prune() {
 					if (value != null) value = value.prune();
@@ -809,6 +843,13 @@ class MetaFieldGenerator {
 			
 			public BasicReferenceWithMeta«type.name.toFirstUpper» build() {
 				return new BasicReferenceWithMeta«type.name.toFirstUpper»(this);
+			}
+			
+			public BasicReferenceWithMeta«type.name.toFirstUpper»Builder copy(BasicReferenceWithMeta«type.name.toFirstUpper»Builder other, boolean overwriteKeys) {
+				this.value = ofNullable(other).map(BasicReferenceWithMeta«type.name.toFirstUpper»Builder::getValue).orElse(null);
+				this.globalReference = ofNullable(other).map(BasicReferenceWithMeta«type.name.toFirstUpper»Builder::getGlobalReference).orElse(null);
+				this.externalReference = ofNullable(other).map(BasicReferenceWithMeta«type.name.toFirstUpper»Builder::getExternalReference).orElse(null);
+				return this;
 			}
 			
 			@Override

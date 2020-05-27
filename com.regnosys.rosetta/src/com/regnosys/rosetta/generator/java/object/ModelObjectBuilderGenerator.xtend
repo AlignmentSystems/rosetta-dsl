@@ -64,6 +64,20 @@ class ModelObjectBuilderGenerator {
 			public «c.name» build() {
 				return new «c.name»(this);
 			}
+			
+			public «builderName(c)» copy(«builderName(c)» other, boolean overwriteKeys) {
+				«FOR attribute : c.expandedAttributes»
+					«IF !(c.hasKeyedAnnotation && attribute.name == "meta")»
+						this.«attribute.name» = ofNullable(other).map(«builderName(c)»::get«attribute.name.toFirstUpper»).orElse(null);
+					«ENDIF»
+				«ENDFOR»
+				«IF c.hasKeyedAnnotation»
+					this.meta = ofNullable(other).map(«builderName(c)»::getMeta)
+												.map(otherMeta -> getOrCreateMeta().copy(otherMeta, overwriteKeys))
+												.orElse(null);
+				«ENDIF»
+				return this;
+			}
 		
 			@Override
 			public «builderName(c)» prune() {
