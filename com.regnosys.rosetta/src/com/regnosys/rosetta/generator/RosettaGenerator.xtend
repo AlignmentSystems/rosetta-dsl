@@ -83,6 +83,8 @@ class RosettaGenerator extends AbstractGenerator {
 		LOGGER.debug("Starting the main generate method for " + resource.URI.toString)
 		val fsa = fsaFactory.resourceAwareFSA(resource, fsa2, false)
 		val lock = locks.computeIfAbsent(resource.resourceSet, [new DemandableLock]);
+		LOGGER.debug("REsource set is "+resource.resourceSet)
+		LOGGER.debug("Demandable lock is "+lock)
 		try {
 			lock.getWriteLock(true);
 			if (!ignoredFiles.contains(resource.URI.segments.last)) {
