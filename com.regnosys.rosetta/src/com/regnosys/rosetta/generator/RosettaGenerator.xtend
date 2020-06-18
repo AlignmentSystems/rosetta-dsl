@@ -36,8 +36,6 @@ import org.eclipse.xtext.generator.AbstractGenerator
 import org.eclipse.xtext.generator.IFileSystemAccess2
 import org.eclipse.xtext.generator.IGeneratorContext
 import com.regnosys.rosetta.generator.java.object.NamespaceHierarchyGenerator
-import com.regnosys.rosetta.generator.resourcefsa.ResourceAwareFSAFactory
-import com.regnosys.rosetta.generator.resourcefsa.TestResourceAwareFSAFactory.TestFolderAwareFsa
 import org.eclipse.emf.ecore.resource.ResourceSet
 import java.util.Map
 
@@ -69,9 +67,6 @@ class RosettaGenerator extends AbstractGenerator {
 	@Inject JavaNames.Factory factory
 	@Inject FuncGenerator funcGenerator
 
-	@Inject
-	ResourceAwareFSAFactory fsaFactory;
-
 	@Inject ModelNamespaceUtil modelNamespaceUtil
 
 	// For files that are
@@ -79,9 +74,8 @@ class RosettaGenerator extends AbstractGenerator {
 
 	val Map<ResourceSet, DemandableLock> locks = newHashMap
 
-	override void doGenerate(Resource resource, IFileSystemAccess2 fsa2, IGeneratorContext context) {
+	override void doGenerate(Resource resource, IFileSystemAccess2 fsa, IGeneratorContext context) {
 		LOGGER.debug("Starting the main generate method for " + resource.URI.toString)
-		val fsa = fsaFactory.resourceAwareFSA(resource, fsa2, false)
 		val lock = locks.computeIfAbsent(resource.resourceSet, [new DemandableLock]);
 		try {
 			lock.getWriteLock(true);
@@ -158,15 +152,13 @@ class RosettaGenerator extends AbstractGenerator {
 		}
 	}
 
-	override void afterGenerate(Resource resource, IFileSystemAccess2 fsa2, IGeneratorContext context) {
+	override void afterGenerate(Resource resource, IFileSystemAccess2 fsa, IGeneratorContext context) {
 		try {
 			val lock = locks.computeIfAbsent(resource.resourceSet, [new DemandableLock]);
-			val fsa = fsaFactory.resourceAwareFSA(resource, fsa2, true)
 			val models = if (resource.resourceSet?.resources === null) {
 							LOGGER.warn("No resource set found for " + resource.URI.toString)
 							newArrayList
 						} else resource.resourceSet.resources.flatMap[contents]
-								.filter[!TestFolderAwareFsa.isTestResource(it.eResource)]
 								.filter(RosettaModel).toList
 
 			val namespaceDescriptionMap = modelNamespaceUtil.namespaceToDescriptionMap(models).asMap
