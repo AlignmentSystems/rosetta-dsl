@@ -30,5 +30,9 @@ public class FilterByRule<I, K extends Comparable<K>> extends NamedNode implemen
 		}
 		return Optional.empty();
 	}
+	
+	public BlueprintInstance<? super I, Boolean, K, K> getFilter() {
+		return filter;
+	}
 
 }
